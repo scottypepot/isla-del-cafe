@@ -1,0 +1,20 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Fraunces", serif;
+  --font-sans: "Jost", sans-serif;
+
+  --color-isla-black: #0e0e0d;
+  --color-isla-cream: #f7f4ee;
+  --color-isla-sand: #e7ddcc;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  color: var(--color-isla-black);
+  background-color: var(--color-isla-cream);
+}
