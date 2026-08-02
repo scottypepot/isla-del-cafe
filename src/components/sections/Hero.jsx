@@ -19,7 +19,7 @@ export default function Hero() {
 
       {/* Hero content */}
       <div className="relative z-10 flex flex-col items-center px-6 text-center">
-        <div className="mb-6 h-[clamp(140px,18vw,260px)] w-[clamp(140px,18vw,260px)] overflow-hidden">
+        <div className="mb-6 h-[clamp(140px,18vw,260px)] w-[clamp(140px,18vw,260px)]">
           <img
             src={islaLogo}
             alt="isla"
@@ -36,7 +36,7 @@ export default function Hero() {
 
         <a
           href="#story"
-          className="mt-8 border-4 border-white font-sans font-semibold tracking-[0.2em] text-white transition-colors duration-200 hover:bg-white hover:text-isla-black"
+          className="mt-8 border border-white font-sans font-semibold tracking-[0.2em] text-white transition-colors duration-200 hover:bg-white hover:text-isla-black"
           style={{
             fontSize: "clamp(0.75rem, 1vw, 0.9rem)",
             padding: "clamp(0.9rem, 1.6vw, 1.25rem) clamp(2rem, 4vw, 3.25rem)",
