@@ -1,20 +1,14 @@
-import Navbar from "./components/layout/Navbar";
-import Footer from "./components/layout/Footer";
-import Hero from "./components/sections/Hero";
-import Favorites from "./components/sections/Favorites";
-import LocationsCTA from "./components/sections/LocationsCTA";
-import DeliveryPartners from "./components/sections/DeliveryPartners";
+import { Routes, Route } from "react-router-dom";
+import Home from "./components/pages/Home.jsx";
+import Menu from "./components/pages/Menu.jsx";
 
 function App() {
   return (
-    <div className="min-h-screen bg-isla-cream">
-      <Navbar />
-      <Hero />
-      <Favorites />
-      <LocationsCTA />
-      <DeliveryPartners />
-      <Footer />
-    </div>
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/menu" element={<Menu />} />
+      {/* /about and /contact routes go here once those pages exist */}
+    </Routes>
   );
 }
 
