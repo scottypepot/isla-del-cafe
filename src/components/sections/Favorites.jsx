@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import ExpressoMenu from "../../assets/expresso-menu.jpg";
 import MatchaMenu from "../../assets/matcha-menu.jpg";
 import MilkMenu from "../../assets/milk-menu.jpg";
@@ -43,9 +44,9 @@ export default function Favorites() {
         {/* Category cards */}
         <div className="mt-12 grid grid-cols-1 place-items-center gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {CATEGORIES.map((category) => (
-            <a
+            <Link
               key={category.key}
-              href="#menu"
+              to={`/menu?tag=${category.key}`}
               data-asset-slot={category.slot}
               className="group relative block aspect-[4/5] w-full overflow-hidden rounded-sm bg-isla-sand transition-transform duration-300 ease-out hover:scale-[1.03] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-isla-black"
               style={{ maxWidth: "clamp(200px, 22vw, 300px)" }}
@@ -61,16 +62,16 @@ export default function Favorites() {
               <span className="absolute inset-x-0 bottom-6 translate-y-3 text-center font-sans text-sm font-semibold uppercase tracking-[0.15em] text-white opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100">
                 View Menu
               </span>
-            </a>
+            </Link>
           ))}
         </div>
 
-        <a
-          href="#menu"
+        <Link
+          to="/menu"
           className="mt-12 inline-block border border-isla-black px-10 py-3 font-sans text-base font-bold text-isla-black transition-colors duration-200 hover:bg-isla-black hover:text-white"
         >
           Our Menu's
-        </a>
+        </Link>
       </div>
     </section>
   );
