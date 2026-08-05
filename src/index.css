@@ -39,3 +39,58 @@ body {
     animation: none;
   }
 }
+@keyframes loader-logo-pulse {
+  0%,
+  100% {
+    transform: scale(0.92);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+.loader-logo {
+  animation: loader-logo-pulse 0.9s ease-in-out infinite;
+}
+
+@keyframes loader-glow-pulse {
+  0%,
+  100% {
+    transform: scale(0.9);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+
+.loader-glow {
+  position: absolute;
+  width: clamp(180px, 30vw, 320px);
+  height: clamp(180px, 30vw, 320px);
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    rgba(231, 221, 204, 0.35) 0%,
+    rgba(231, 221, 204, 0) 70%
+  );
+  animation: loader-glow-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes loader-palm-sway {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
+}
+
+.loader-palm {
+  transform-origin: 50% 100%;
+  animation: loader-palm-sway 2.2s ease-in-out infinite;
+}
