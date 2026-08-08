@@ -13,7 +13,11 @@ export const categories = [
   { id: "snacks", label: "Snacks", navLabel: "Snacks" },
   { id: "others", label: "Others", navLabel: "Others" },
 ];
-
+export const drinkTags = [
+  { id: "espresso", label: "Espresso Based" },
+  { id: "matcha", label: "Matcha Series" },
+  { id: "milk", label: "Milk Based" },
+];
 export const menuItems = [
   // ---- Drinks ----
   {

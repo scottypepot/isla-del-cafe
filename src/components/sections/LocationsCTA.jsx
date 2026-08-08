@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import PalmTreeIcon from "../../assets/palm-tree.png";
 import LocationsBackground from "../../assets/locationsection-homepage.jpg";
 
@@ -39,12 +40,12 @@ export default function LocationsCTA() {
           Your favorite flavors are waiting at a location near you.
         </p>
 
-        <a
-          href="#our-locations"
+        <Link
+          to="/location"
           className="mt-8 inline-block border border-white px-10 py-4 font-sans text-xs font-semibold tracking-[0.2em] text-white transition-colors duration-200 hover:bg-white hover:text-isla-black"
         >
           OUR LOCATIONS
-        </a>
+        </Link>
       </div>
     </section>
   );
