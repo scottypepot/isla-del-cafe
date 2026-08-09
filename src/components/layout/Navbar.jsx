@@ -1,16 +1,41 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import islaLogo from "../../assets/islalogo.png";
 
 const NAV_LINKS = [
   { label: "Home", to: "/" },
-  { label: "About Us", to: "/#about" },
+  // No About page yet — left as a non-clickable placeholder until it's built.
+  { label: "About Us", to: null },
   { label: "Menu", to: "/menu" },
 ];
 
 export default function Navbar() {
   const [contactOpen, setContactOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const contactRef = useRef(null);
+
+  // Contact dropdown: hover or click opens it, and it stays open until
+  // an outside click (or Escape) closes it — it no longer closes just
+  // from moving the mouse away.
+  useEffect(() => {
+    if (!contactOpen) return;
+
+    const handleClickOutside = (event) => {
+      if (contactRef.current && !contactRef.current.contains(event.target)) {
+        setContactOpen(false);
+      }
+    };
+    const handleKeyDown = (event) => {
+      if (event.key === "Escape") setContactOpen(false);
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [contactOpen]);
 
   return (
     <header className="absolute top-0 left-0 right-0 z-30">
@@ -34,20 +59,32 @@ export default function Navbar() {
 
         {/* Desktop nav links */}
         <ul className="hidden items-center gap-9 font-sans text-xl font-medium tracking-wide text-white md:flex">
-          {NAV_LINKS.map((link) => (
-            <li key={link.label}>
-              <Link
-                to={link.to}
-                className="transition-colors duration-200 hover:text-white/70"
-              >
-                {link.label}
-              </Link>
-            </li>
-          ))}
+          {NAV_LINKS.map((link) =>
+            link.to ? (
+              <li key={link.label}>
+                <Link
+                  to={link.to}
+                  className="transition-colors duration-200 hover:text-white/70"
+                >
+                  {link.label}
+                </Link>
+              </li>
+            ) : (
+              <li key={link.label}>
+                <span
+                  className="cursor-default text-white/50"
+                  aria-disabled="true"
+                  title="Coming soon"
+                >
+                  {link.label}
+                </span>
+              </li>
+            ),
+          )}
           <li
+            ref={contactRef}
             className="relative"
             onMouseEnter={() => setContactOpen(true)}
-            onMouseLeave={() => setContactOpen(false)}
           >
             <button
               type="button"
@@ -80,6 +117,7 @@ export default function Navbar() {
                 <li>
                   <Link
                     to="/#contact"
+                    onClick={() => setContactOpen(false)}
                     className="block px-4 py-2 text-sm text-white transition-colors hover:bg-white/10"
                   >
                     Get in Touch
@@ -87,10 +125,20 @@ export default function Navbar() {
                 </li>
                 <li>
                   <Link
-                    to="/#locations"
+                    to="/location"
+                    onClick={() => setContactOpen(false)}
                     className="block px-4 py-2 text-sm text-white transition-colors hover:bg-white/10"
                   >
                     Locations
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to="/franchise"
+                    onClick={() => setContactOpen(false)}
+                    className="block px-4 py-2 text-sm text-white transition-colors hover:bg-white/10"
+                  >
+                    Franchise Inquiry
                   </Link>
                 </li>
               </ul>
@@ -128,16 +176,34 @@ export default function Navbar() {
       {mobileOpen && (
         <div className="mx-6 mb-4 rounded-lg bg-isla-black/95 px-6 py-6 font-sans text-white backdrop-blur-sm md:hidden">
           <ul className="flex flex-col gap-4 text-sm font-medium">
-            {NAV_LINKS.map((link) => (
-              <li key={link.label}>
-                <Link to={link.to} onClick={() => setMobileOpen(false)}>
-                  {link.label}
-                </Link>
-              </li>
-            ))}
+            {NAV_LINKS.map((link) =>
+              link.to ? (
+                <li key={link.label}>
+                  <Link to={link.to} onClick={() => setMobileOpen(false)}>
+                    {link.label}
+                  </Link>
+                </li>
+              ) : (
+                <li key={link.label}>
+                  <span className="text-white/50" aria-disabled="true">
+                    {link.label}
+                  </span>
+                </li>
+              ),
+            )}
             <li>
               <Link to="/#contact" onClick={() => setMobileOpen(false)}>
-                Contact
+                Get in Touch
+              </Link>
+            </li>
+            <li>
+              <Link to="/location" onClick={() => setMobileOpen(false)}>
+                Locations
+              </Link>
+            </li>
+            <li>
+              <Link to="/franchise" onClick={() => setMobileOpen(false)}>
+                Franchise Inquiry
               </Link>
             </li>
           </ul>

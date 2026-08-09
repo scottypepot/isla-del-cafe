@@ -8,6 +8,7 @@
   --color-isla-cream: #f7f4ee;
   --color-isla-sand: #e7ddcc;
   --color-menu-tile: #8b5a3d;
+  --color-isla-gold: #d9a441;
 }
 
 html {
@@ -19,6 +20,10 @@ body {
   color: var(--color-isla-black);
   background-color: var(--color-isla-cream);
 }
+
+/* ---------------------------------- */
+/* Page transition (App.jsx)          */
+/* ---------------------------------- */
 
 @keyframes page-fade-in {
   from {
@@ -33,9 +38,189 @@ body {
   animation: page-fade-in 0.35s ease-out;
 }
 
-/* Respect users who've asked their OS to reduce motion */
+/* ---------------------------------- */
+/* Route-change loader (App.jsx)      */
+/* ---------------------------------- */
+
+@keyframes loader-logo-pulse {
+  0%,
+  100% {
+    transform: scale(0.92);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 1;
+  }
+}
+
+.loader-logo {
+  animation: loader-logo-pulse 0.9s ease-in-out infinite;
+}
+
+@keyframes loader-glow-pulse {
+  0%,
+  100% {
+    transform: scale(0.9);
+    opacity: 0.55;
+  }
+  50% {
+    transform: scale(1.15);
+    opacity: 1;
+  }
+}
+
+.loader-glow {
+  position: absolute;
+  width: clamp(180px, 30vw, 320px);
+  height: clamp(180px, 30vw, 320px);
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    rgba(231, 221, 204, 0.35) 0%,
+    rgba(231, 221, 204, 0) 70%
+  );
+  animation: loader-glow-pulse 1.8s ease-in-out infinite;
+}
+
+@keyframes loader-palm-sway {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
+}
+
+.loader-palm {
+  transform-origin: 50% 100%;
+  animation: loader-palm-sway 2.2s ease-in-out infinite;
+}
+
+@keyframes loader-dot-bounce {
+  0%,
+  80%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  40% {
+    transform: translateY(-6px);
+    opacity: 1;
+  }
+}
+
+.loader-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 9999px;
+  background-color: var(--color-isla-sand);
+  animation: loader-dot-bounce 0.9s ease-in-out infinite;
+}
+
+/* ---------------------------------- */
+/* Modal popups (Location + Menu)     */
+/* ---------------------------------- */
+
+@keyframes modal-backdrop-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.modal-backdrop-in {
+  animation: modal-backdrop-fade 0.2s ease-out;
+}
+
+@keyframes modal-panel-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.modal-panel-in {
+  animation: modal-panel-pop 0.25s ease-out;
+}
+
+/* Themed scrollbar for the Menu filter popup */
+.filter-popup-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-isla-gold) transparent;
+}
+
+.filter-popup-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.filter-popup-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.filter-popup-scroll::-webkit-scrollbar-thumb {
+  background-color: var(--color-isla-gold);
+  border-radius: 9999px;
+}
+
+/* ---------------------------------- */
+/* Landing Hero                        */
+/* ---------------------------------- */
+
+@keyframes hero-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-fade-up {
+  opacity: 0;
+  animation: hero-fade-up 1.2s ease-out forwards;
+}
+
+@keyframes hero-scroll-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
+}
+
+.hero-scroll-cue {
+  animation: hero-scroll-bounce 1.8s ease-in-out infinite;
+}
+
+/* ---------------------------------- */
+/* Respect users who've asked their   */
+/* OS to reduce motion                */
+/* ---------------------------------- */
+
 @media (prefers-reduced-motion: reduce) {
-  .page-transition {
+  .page-transition,
+  .loader-logo,
+  .loader-glow,
+  .loader-palm,
+  .loader-dot,
+  .modal-backdrop-in,
+  .modal-panel-in,
+  .hero-fade-up,
+  .hero-scroll-cue {
     animation: none;
+    opacity: 1;
+    transform: none;
   }
 }

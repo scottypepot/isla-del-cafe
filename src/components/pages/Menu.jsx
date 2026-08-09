@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import Footer from "../layout/Footer.jsx";
 import MenuHero from "../menu/MenuHero.jsx";
-import MenuFilterSidebar from "../menu/MenuFilterSidebar.jsx";
+import MenuFilter from "../menu/MenuFilter.jsx";
 import MenuGrid from "../menu/MenuGrid.jsx";
-import { categories, menuItems } from "../data/menuData.js";
+import { categories, drinkTags, menuItems } from "../data/menuData.js";
 
 function Menu() {
   const [searchParams] = useSearchParams();
@@ -23,6 +23,7 @@ function Menu() {
   }, [tagParam]);
 
   const activeCategoryData = categories.find((c) => c.id === activeCategory);
+  const activeTagData = drinkTags.find((t) => t.id === activeTag);
 
   const visibleItems = menuItems
     .filter(
@@ -32,7 +33,12 @@ function Menu() {
 
   const handleSelectCategory = (categoryId) => {
     setActiveCategory(categoryId);
-    setActiveTag(null); // manually picking a category clears any tag filter from a Favorites link
+    setActiveTag(null); // manually picking a category clears any tag filter
+  };
+
+  const handleSelectTag = (tagId) => {
+    setActiveCategory("drinks"); // tags are always a subset of Drinks
+    setActiveTag(tagId);
   };
 
   return (
@@ -40,14 +46,24 @@ function Menu() {
       <MenuHero />
 
       <section className="max-w-6xl mx-auto px-6 md:px-10 py-16 md:py-24">
-        <div className="flex flex-col md:flex-row gap-10 md:gap-20">
-          <MenuFilterSidebar
+        <div className="flex items-center justify-between gap-4 mb-10 md:mb-14">
+          <MenuFilter
             categories={categories}
+            tags={drinkTags}
             activeCategory={activeCategory}
-            onSelect={handleSelectCategory}
+            activeTag={activeTag}
+            onSelectCategory={handleSelectCategory}
+            onSelectTag={handleSelectTag}
           />
-          <MenuGrid heading={activeCategoryData.label} items={visibleItems} />
+          <h2
+            className="font-bold text-black text-right"
+            style={{ fontSize: "clamp(1.5rem, 3vw, 2.5rem)" }}
+          >
+            {activeTagData?.label ?? activeCategoryData.label}
+          </h2>
         </div>
+
+        <MenuGrid items={visibleItems} />
       </section>
 
       <Footer />
