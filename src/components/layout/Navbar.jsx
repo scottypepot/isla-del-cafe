@@ -132,6 +132,15 @@ export default function Navbar() {
                     Locations
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    to="/franchise"
+                    onClick={() => setContactOpen(false)}
+                    className="block px-4 py-2 text-sm text-white transition-colors hover:bg-white/10"
+                  >
+                    Franchise Inquiry
+                  </Link>
+                </li>
               </ul>
             )}
           </li>
@@ -190,6 +199,11 @@ export default function Navbar() {
             <li>
               <Link to="/location" onClick={() => setMobileOpen(false)}>
                 Locations
+              </Link>
+            </li>
+            <li>
+              <Link to="/franchise" onClick={() => setMobileOpen(false)}>
+                Franchise Inquiry
               </Link>
             </li>
           </ul>

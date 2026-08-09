@@ -1,4 +1,5 @@
 import Navbar from "../layout/Navbar";
+import menuNavbarBg from "../../assets/menu-section-navbar.jpg";
 
 function MenuHero() {
   return (
@@ -7,9 +8,9 @@ function MenuHero() {
       <div
         className="absolute inset-0 bg-neutral-800"
         style={{
+          backgroundImage: `url(${menuNavbarBg})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
-          // backgroundImage: "url('/menu-hero.jpg')",
         }}
       />
       <div className="absolute inset-0 bg-black/60" />

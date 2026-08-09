@@ -3,6 +3,7 @@ import { Routes, Route, useLocation } from "react-router-dom";
 import Home from "./components/pages/Home.jsx";
 import Menu from "./components/pages/Menu.jsx";
 import Location from "./components/pages/Location.jsx";
+import Franchise from "./components/pages/Franchise.jsx";
 import palmTree from "./assets/palm-tree.png";
 
 const LOADER_DURATION = 650; // how long the branded loader stays fully visible
@@ -112,6 +113,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/menu" element={<Menu />} />
           <Route path="/location" element={<Location />} />
+          <Route path="/franchise" element={<Franchise />} />
           {/* /about and /contact routes go here once those pages exist */}
         </Routes>
       </div>
