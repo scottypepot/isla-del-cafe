@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import backgroundImage from "../../assets/homepage.jpg";
 import islaLogo from "../../assets/islalogo.png";
 
@@ -41,8 +42,8 @@ export default function Hero() {
           Your New Iced Coffee Standard.
         </p>
 
-        <a
-          href="#favorites"
+        <Link
+          to="/our-story"
           className="hero-fade-up mt-8 border border-white font-sans font-semibold tracking-[0.2em] text-white transition-colors duration-200 hover:bg-white hover:text-isla-black"
           style={{
             fontSize: "clamp(0.75rem, 1vw, 0.9rem)",
@@ -51,7 +52,7 @@ export default function Hero() {
           }}
         >
           OUR STORY
-        </a>
+        </Link>
       </div>
 
       {/* Scroll cue */}

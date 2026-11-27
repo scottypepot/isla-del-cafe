@@ -1,8 +1,19 @@
 import { useState } from "react";
 import useModalBehavior from "../../hooks/useModalBehavior.js";
 import { CloseIcon } from "../ui/icons.jsx";
+import palmTree from "../../assets/palm-tree.png";
 
-function LocationCard({ name, address, hours, social, mapQuery, image }) {
+function LocationCard({
+  id,
+  name,
+  address,
+  hours,
+  social,
+  mapQuery,
+  latitude,
+  longitude,
+  image,
+}) {
   const [isMapOpen, setIsMapOpen] = useState(false);
   const [hasLoadedMap, setHasLoadedMap] = useState(false);
 
@@ -15,9 +26,18 @@ function LocationCard({ name, address, hours, social, mapQuery, image }) {
 
   const panelRef = useModalBehavior(isMapOpen, closeMap);
 
-  const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(
-    mapQuery,
-  )}&z=15&output=embed`;
+  // Exact pin when the branch has coordinates (from the API); otherwise fall
+  // back to a text search on the address.
+  const hasCoordinates = latitude != null && longitude != null;
+  const mapTarget = hasCoordinates
+    ? `${latitude},${longitude}`
+    : encodeURIComponent(mapQuery);
+
+  const mapSrc = `https://www.google.com/maps?q=${mapTarget}&z=${
+    hasCoordinates ? 17 : 15
+  }&output=embed`;
+  const directionsUrl = `https://www.google.com/maps/dir/?api=1&destination=${mapTarget}`;
+  const openInMapsUrl = `https://www.google.com/maps/search/?api=1&query=${mapTarget}`;
 
   return (
     <div className="flex flex-col">
@@ -35,6 +55,24 @@ function LocationCard({ name, address, hours, social, mapQuery, image }) {
         }
       >
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/45 to-black/20" />
+
+        {/* Photo placeholder — shown until the branch has an `image` */}
+        {!image && (
+          <div
+            data-asset-slot={`location-${id}-photo`}
+            className="absolute inset-3 flex flex-col items-center justify-start gap-2 rounded-md border border-dashed border-white/15 bg-gradient-to-br from-neutral-700/70 via-neutral-800 to-neutral-950 pt-[9%]"
+          >
+            <img
+              src={palmTree}
+              alt=""
+              aria-hidden="true"
+              className="h-10 w-10 opacity-60 sm:h-12 sm:w-12"
+            />
+            <span className="font-sans text-[0.6rem] font-semibold uppercase tracking-[0.25em] text-white/55">
+              Photo coming soon
+            </span>
+          </div>
+        )}
 
         <div className="relative z-10 flex h-full flex-col justify-between p-5 sm:p-6">
           <span className="font-sans text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-white/70">
@@ -121,6 +159,25 @@ function LocationCard({ name, address, hours, social, mapQuery, image }) {
                 className="h-[60vh] w-full sm:h-[26rem]"
               />
             )}
+
+            <div className="flex flex-col gap-3 border-t border-isla-black/10 px-5 py-4 sm:flex-row sm:px-6">
+              <a
+                href={directionsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 border border-isla-black bg-isla-black px-5 py-3 text-center font-sans text-sm font-bold text-white transition-colors duration-200 hover:bg-transparent hover:text-isla-black"
+              >
+                Get Directions
+              </a>
+              <a
+                href={openInMapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 border border-isla-black px-5 py-3 text-center font-sans text-sm font-bold text-isla-black transition-colors duration-200 hover:bg-isla-black hover:text-white"
+              >
+                Open in Google Maps
+              </a>
+            </div>
           </div>
         </div>
       )}

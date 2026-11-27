@@ -46,17 +46,19 @@ function Menu() {
       <MenuHero />
 
       <section className="max-w-6xl mx-auto px-6 md:px-10 py-16 md:py-24">
-        <div className="flex items-center justify-between gap-4 mb-10 md:mb-14">
-          <MenuFilter
-            categories={categories}
-            tags={drinkTags}
-            activeCategory={activeCategory}
-            activeTag={activeTag}
-            onSelectCategory={handleSelectCategory}
-            onSelectTag={handleSelectTag}
-          />
+        <div className="flex items-center justify-between gap-4 mb-10 md:mb-14 md:grid md:grid-cols-[1fr_auto_1fr]">
+          <div>
+            <MenuFilter
+              categories={categories}
+              tags={drinkTags}
+              activeCategory={activeCategory}
+              activeTag={activeTag}
+              onSelectCategory={handleSelectCategory}
+              onSelectTag={handleSelectTag}
+            />
+          </div>
           <h2
-            className="font-bold text-black text-right"
+            className="font-bold text-black text-right md:col-start-2 md:text-center"
             style={{ fontSize: "clamp(1.5rem, 3vw, 2.5rem)" }}
           >
             {activeTagData?.label ?? activeCategoryData.label}
