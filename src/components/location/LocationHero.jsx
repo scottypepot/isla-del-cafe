@@ -1,15 +1,16 @@
 import Navbar from "../layout/Navbar.jsx";
+import locationHeroBg from "../../assets/homepage.jpg";
 
 function LocationHero() {
   return (
     <section className="relative w-full overflow-hidden">
-      {/* Background image placeholder — set backgroundImage below once the photo is ready */}
+      {/* Background image — same photo as the homepage hero */}
       <div
         className="absolute inset-0 bg-neutral-800"
         style={{
+          backgroundImage: `url(${locationHeroBg})`,
           backgroundSize: "cover",
-          backgroundPosition: "center",
-          // backgroundImage: "url('/location-hero.jpg')",
+          backgroundPosition: "center 42%",
         }}
       />
       <div className="absolute inset-0 bg-black/60" />

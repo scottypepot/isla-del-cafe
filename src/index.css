@@ -200,6 +200,49 @@ body {
 }
 
 /* ---------------------------------- */
+/* Our Story page                      */
+/* ---------------------------------- */
+
+/* Scroll-triggered reveal (components/story/Reveal.jsx) */
+.reveal {
+  opacity: 0;
+  transition:
+    opacity 0.9s ease-out,
+    transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-up {
+  transform: translateY(32px);
+}
+
+.reveal-left {
+  transform: translateX(-40px);
+}
+
+.reveal-right {
+  transform: translateX(40px);
+}
+
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Slow "settle" zoom on the Our Story hero photo */
+@keyframes story-hero-zoom {
+  from {
+    transform: scale(1.08);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
+.story-hero-zoom {
+  animation: story-hero-zoom 2.4s ease-out forwards;
+}
+
+/* ---------------------------------- */
 /* Respect users who've asked their   */
 /* OS to reduce motion                */
 /* ---------------------------------- */
@@ -212,9 +255,16 @@ body {
   .modal-backdrop-in,
   .modal-panel-in,
   .hero-fade-up,
-  .hero-scroll-cue {
+  .hero-scroll-cue,
+  .story-hero-zoom {
     animation: none;
     opacity: 1;
     transform: none;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }

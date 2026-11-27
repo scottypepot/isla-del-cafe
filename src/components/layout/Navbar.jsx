@@ -4,8 +4,7 @@ import islaLogo from "../../assets/islalogo.png";
 
 const NAV_LINKS = [
   { label: "Home", to: "/" },
-  // No About page yet — left as a non-clickable placeholder until it's built.
-  { label: "About Us", to: null },
+  { label: "About Us", to: "/our-story" },
   { label: "Menu", to: "/menu" },
 ];
 

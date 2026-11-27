@@ -168,3 +168,13 @@ A few things worth knowing before touching related code:
 2. Build About page
 3. Implement backend
 4. Wire up frontend ↔ backend integration, starting with Franchise form email delivery
+
+---
+
+## Our Story page (`/our-story`)
+
+Opened by the **OUR STORY** button on the homepage hero and the **About Us** nav link.
+
+- All copy and photo slots live in `src/components/data/storyData.js`. Everything there is **placeholder**; replace it with the owner's real story.
+- While `SHOW_PLACEHOLDER_NOTES` is `true`, dashed "Placeholder – Owner to provide" notes appear on the page. Set it to `false` before going live.
+- Sections are in `src/components/story/`; the page itself is `src/components/pages/OurStory.jsx`.
