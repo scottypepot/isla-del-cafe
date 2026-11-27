@@ -1,4 +1,5 @@
 import Navbar from "../layout/Navbar.jsx";
+import locationBg from "../../assets/locationsection-homepage.jpg";
 
 function LocationHero() {
   return (
@@ -7,9 +8,9 @@ function LocationHero() {
       <div
         className="absolute inset-0 bg-neutral-800"
         style={{
+          backgroundImage: `url(${locationBg})`,
           backgroundSize: "cover",
-          backgroundPosition: "center",
-          // backgroundImage: "url('/location-hero.jpg')",
+          backgroundPosition: "center 42%",
         }}
       />
       <div className="absolute inset-0 bg-black/60" />
