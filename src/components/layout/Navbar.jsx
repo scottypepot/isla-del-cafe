@@ -84,7 +84,10 @@ export default function Navbar() {
           <li
             ref={contactRef}
             className="relative"
-            onMouseEnter={() => setContactOpen(true)}
+            onPointerEnter={(event) => {
+              // Hover-to-open is for mouse only; on touch the tap (onClick) toggles.
+              if (event.pointerType === "mouse") setContactOpen(true);
+            }}
           >
             <button
               type="button"

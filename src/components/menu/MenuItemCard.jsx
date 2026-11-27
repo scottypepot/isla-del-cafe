@@ -1,45 +1,12 @@
-import { useEffect, useState } from "react";
-
-function CloseIcon() {
-  return (
-    <svg
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M1 1L15 15M15 1L1 15"
-        stroke="currentColor"
-        strokeWidth="1.75"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
+import { useState } from "react";
+import useModalBehavior from "../../hooks/useModalBehavior.js";
+import { CloseIcon } from "../ui/icons.jsx";
 
 function MenuItemCard({ name, image, variant, ingredients = [] }) {
   const [isOpen, setIsOpen] = useState(false);
   const isDrink = variant === "drink";
 
-  // While the popup is open: lock background scroll, allow Escape to close
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleKeyDown = (event) => {
-      if (event.key === "Escape") setIsOpen(false);
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [isOpen]);
+  const panelRef = useModalBehavior(isOpen, () => setIsOpen(false));
 
   return (
     <>
@@ -61,6 +28,8 @@ function MenuItemCard({ name, image, variant, ingredients = [] }) {
             <img
               src={image}
               alt={name}
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover"
             />
           ) : (
@@ -93,7 +62,9 @@ function MenuItemCard({ name, image, variant, ingredients = [] }) {
             role="dialog"
             aria-modal="true"
             aria-label={`${name} details`}
-            className="modal-panel-in relative w-full max-w-sm overflow-hidden rounded-lg bg-isla-cream"
+            ref={panelRef}
+            tabIndex={-1}
+            className="modal-panel-in relative outline-none w-full max-w-sm overflow-hidden rounded-lg bg-isla-cream"
             onClick={(event) => event.stopPropagation()}
           >
             {/* Plain color header band — no image, just the tile color as a backdrop */}

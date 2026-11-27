@@ -13,7 +13,7 @@ Built from Figma designs, developed screen-by-screen with frontend and backend i
 | Frontend    | React 19 + Vite                          |
 | Routing     | React Router DOM v7 (client-side)        |
 | Styling     | Tailwind CSS v4                          |
-| Fonts       | Fraunces (display), Jost (body/nav)      |
+| Fonts       | Jost (body/nav) — Fraunces token reserved, not loaded |
 | Backend     | TBD — to be implemented in a later phase |
 | Integration | TBD — planned after frontend sign-off    |
 
@@ -48,7 +48,10 @@ src/
 │ ├── menu/ # Menu page: hero, filter popup, grid, item cards
 │ ├── location/ # Location page: hero, branch cards + map modal
 │ ├── franchise/ # Franchise page: hero, inquiry form
+│ ├── ui/ # Small shared icons (CloseIcon, CheckIcon)
 │ └── pages/ # Route-level components (Home, Menu, Location, Franchise)
+├── hooks/
+│ └── useModalBehavior.js # Escape-to-close, scroll lock, focus in/out for every modal
 ├── App.jsx # Router, route-change loader, scroll handling
 ├── main.jsx # App entry point, BrowserRouter
 └── index.css # Tailwind import + design tokens (@theme) + all custom animations
@@ -84,7 +87,7 @@ Design tokens are defined in `src/index.css` under Tailwind's `@theme` directive
 **Typography**
 | Role | Font | Notes |
 | -------- | -------- | -------------------------- |
-| Display | Fraunces | Logo, headings |
+| Display | Fraunces | Reserved (`--font-display`) — not loaded or used yet; add it back in `index.html` before using |
 | Body/Nav | Jost | Navigation, body copy |
 
 ---
@@ -125,7 +128,7 @@ A few things worth knowing before touching related code:
 
 - **Route-change loader** (`App.jsx`) — a branded palm-tree loader shows on every real navigation (not on hash-only or first-load), then fades into the new page. Skips entirely for users with `prefers-reduced-motion` set.
 - **Hash scrolling** — links like `/#favorites` or `/#contact` scroll to a matching `id` on the Home page, whether you're already there (smooth scroll) or navigating from another page (instant, hidden behind the loader).
-- **Modal popup pattern** — reused for the Menu filter, each Menu item's ingredients, and each Location branch's map: dark/light themed panel, closes on outside click, Escape, or the X button, locks background scroll while open. New popups should follow this same shape for consistency.
+- **Modal popup pattern** — reused for the Menu filter, each Menu item's ingredients, and each Location branch's map: dark/light themed panel, closes on outside click, Escape, or the X button, locks background scroll while open. The shared behavior lives in `hooks/useModalBehavior.js` — new popups should call it and follow the same shape for consistency.
 - **Favorites → Menu deep links** — clicking an espresso/matcha/milk card on the Home page navigates to `/menu?tag=espresso` (etc.), which pre-filters the Menu page to that drink type.
 - **Location maps** — uses Google's keyless embed URL (`google.com/maps?q=...&output=embed`), geocoded from the address string in `locationsData.js`. No API key required for this, but it also means no custom pins/styling — a real Maps API key would be needed for that later.
 

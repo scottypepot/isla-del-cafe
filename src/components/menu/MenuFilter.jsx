@@ -1,5 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import palmTree from "../../assets/palm-tree.png";
+import useModalBehavior from "../../hooks/useModalBehavior.js";
+import { CheckIcon, CloseIcon } from "../ui/icons.jsx";
 
 function FunnelIcon() {
   return (
@@ -14,26 +16,6 @@ function FunnelIcon() {
       strokeLinejoin="round"
     >
       <polygon points="3 4 21 4 14 12.5 14 19 10 21 10 12.5 3 4" />
-    </svg>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 16 16"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M2.5 8.5L6 12L13.5 4"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
     </svg>
   );
 }
@@ -70,23 +52,19 @@ function MenuFilter({
   const triggerLabel =
     activeTagData?.label ?? activeCategoryData?.navLabel ?? "All";
 
-  // While the popup is open: lock background scroll, allow Escape to close
-  useEffect(() => {
-    if (!isOpen) return;
+  const panelRef = useModalBehavior(isOpen, () => setIsOpen(false));
 
-    const handleKeyDown = (event) => {
-      if (event.key === "Escape") setIsOpen(false);
-    };
+  const [isScrolling, setIsScrolling] = useState(false);
+  const scrollTimer = useRef(null);
 
-    document.addEventListener("keydown", handleKeyDown);
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+  useEffect(() => () => clearTimeout(scrollTimer.current), []);
 
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [isOpen]);
+  // Show the scrollbar while scrolling, hide it ~0.8s after the last scroll event
+  const handleScroll = () => {
+    setIsScrolling(true);
+    clearTimeout(scrollTimer.current);
+    scrollTimer.current = setTimeout(() => setIsScrolling(false), 800);
+  };
 
   const handleSelectCategory = (categoryId) => {
     onSelectCategory(categoryId);
@@ -119,10 +97,14 @@ function MenuFilter({
         >
           <div
             role="dialog"
+            onScroll={handleScroll}
             aria-modal="true"
             aria-label="Filter menu items"
-            className="modal-panel-in filter-popup-scroll relative w-full max-w-md max-h-[92vh] overflow-y-auto overflow-x-hidden rounded-lg bg-isla-black"
-            onClick={(event) => event.stopPropagation()}
+            ref={panelRef}
+            tabIndex={-1}
+            className={`modal-panel-in filter-popup-scroll outline-none relative w-full max-w-md max-h-[92vh] overflow-y-auto overflow-x-hidden rounded-lg bg-isla-black ${
+              isScrolling ? "is-scrolling" : ""
+            }`}
           >
             {/* Decorative top accent bar */}
             <div className="h-1.5 w-full bg-gradient-to-r from-isla-gold via-isla-sand to-isla-gold" />
@@ -136,7 +118,7 @@ function MenuFilter({
             />
             <span className="pointer-events-none absolute -bottom-10 -right-10 h-48 w-48 rounded-full bg-isla-gold/20 blur-3xl" />
 
-            <div className="sticky top-0 z-10 flex items-center justify-between border-b border-white/10 bg-isla-black/95 px-5 py-4 backdrop-blur-sm sm:px-6">
+            <div className="sticky top-0 z-20 flex items-center justify-between border-b border-white/10 bg-isla-black px-5 py-4 sm:px-6">
               <div>
                 <p className="font-sans text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-isla-gold">
                   Isla Del Café
@@ -151,20 +133,7 @@ function MenuFilter({
                 aria-label="Close filter"
                 className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-white/20 text-white transition-colors duration-200 hover:border-isla-gold hover:bg-isla-gold hover:text-isla-black"
               >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M1 1L15 15M15 1L1 15"
-                    stroke="currentColor"
-                    strokeWidth="1.75"
-                    strokeLinecap="round"
-                  />
-                </svg>
+                <CloseIcon />
               </button>
             </div>
 

@@ -4,7 +4,7 @@ function MenuGrid({ items }) {
   if (items.length === 0) {
     return (
       <p className="text-center text-neutral-400">
-        No items yet — add them in menuData.js.
+        Nothing here yet — check back soon.
       </p>
     );
   }
@@ -16,6 +16,7 @@ function MenuGrid({ items }) {
           key={item.id}
           name={item.name}
           image={item.image}
+          ingredients={item.ingredients}
           variant={item.category === "snacks" ? "snack" : "drink"}
         />
       ))}

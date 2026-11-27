@@ -36,6 +36,8 @@ export default function DeliveryPartners() {
             <img
               src={partner.image}
               alt={partner.label}
+              loading="lazy"
+              decoding="async"
               className="w-auto object-contain"
               style={{ height: "clamp(90px, 11vw, 160px)" }}
             />

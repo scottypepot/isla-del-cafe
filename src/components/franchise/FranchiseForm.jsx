@@ -1,5 +1,6 @@
 import { useState } from "react";
 import palmTree from "../../assets/palm-tree.png";
+import { CheckIcon } from "../ui/icons.jsx";
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -35,6 +36,9 @@ const WHY_FRANCHISE = [
   "Site selection guidance based on our own store data",
 ];
 
+// Order of the fields on screen — used to focus the first invalid one.
+const FIELD_ORDER = ["fullName", "email", "phone", "preferredLocation", "message"];
+
 const INITIAL_FORM = {
   fullName: "",
   email: "",
@@ -62,7 +66,10 @@ function validate(form) {
     }
   }
 
-  if (!PHONE_PATTERN.test(form.phone.trim())) {
+  if (
+    !PHONE_PATTERN.test(form.phone.trim()) ||
+    form.phone.replace(/\D/g, "").length < 7
+  ) {
     errors.phone = "Enter a valid phone number.";
   }
 
@@ -192,26 +199,6 @@ function ChevronIcon() {
   );
 }
 
-function CheckIcon() {
-  return (
-    <svg
-      width="14"
-      height="14"
-      viewBox="0 0 16 16"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M2.5 8.5L6 12L13.5 4"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </svg>
-  );
-}
-
 function BigCheckIcon() {
   return (
     <svg
@@ -282,6 +269,8 @@ function Field({
           value={value}
           onChange={onChange}
           placeholder={placeholder}
+          aria-invalid={error ? "true" : undefined}
+          aria-describedby={error ? `${name}-error` : undefined}
           className={`w-full rounded-md border bg-white py-3 font-sans text-sm text-isla-black transition-colors focus:outline-none ${
             icon ? "pl-10 pr-4" : "px-4"
           } ${
@@ -292,7 +281,9 @@ function Field({
         />
       </div>
       {error && (
-        <p className="mt-1.5 font-sans text-xs text-red-500">{error}</p>
+        <p id={`${name}-error`} className="mt-1.5 font-sans text-xs text-red-500">
+          {error}
+        </p>
       )}
     </div>
   );
@@ -303,6 +294,7 @@ function FranchiseForm() {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -324,20 +316,29 @@ function FranchiseForm() {
     const validationErrors = validate(form);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      const firstInvalid = FIELD_ORDER.find((name) => validationErrors[name]);
+      if (firstInvalid) document.getElementById(firstInvalid)?.focus();
       return;
     }
 
     setIsSubmitting(true);
+    setSubmitError("");
 
+    try {
     // TODO: replace this with a real submission once the backend/email
     // service is wired up (e.g. EmailJS, or a POST to your own API
     // endpoint). This currently just simulates a network request so
     // the full UI/UX is ready — swapping this block for a real call
     // is the only change needed later.
-    await new Promise((resolve) => setTimeout(resolve, 700));
-
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+      await new Promise((resolve) => setTimeout(resolve, 700));
+      setIsSubmitted(true);
+    } catch {
+      setSubmitError(
+        "Something went wrong sending your inquiry. Please try again, or contact us directly.",
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -509,9 +510,14 @@ function FranchiseForm() {
 
             <div>
               <SectionLabel number="3" title="Tell Us More" />
+              <label htmlFor="message" className="sr-only">
+                Message
+              </label>
               <textarea
                 id="message"
                 name="message"
+                aria-invalid={errors.message ? "true" : undefined}
+                aria-describedby={errors.message ? "message-error" : undefined}
                 rows={4}
                 value={form.message}
                 onChange={handleChange}
@@ -523,11 +529,20 @@ function FranchiseForm() {
                 }`}
               />
               {errors.message && (
-                <p className="mt-1.5 font-sans text-xs text-red-500">
+                <p
+                  id="message-error"
+                  className="mt-1.5 font-sans text-xs text-red-500"
+                >
                   {errors.message}
                 </p>
               )}
             </div>
+
+            {submitError && (
+              <p role="alert" className="-mb-4 font-sans text-sm text-red-500">
+                {submitError}
+              </p>
+            )}
 
             <button
               type="submit"
