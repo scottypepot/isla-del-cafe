@@ -54,6 +54,8 @@ export default function Favorites() {
               <img
                 src={category.image}
                 alt={`${category.lines.join(" ")} menu`}
+                loading="lazy"
+                decoding="async"
                 className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 ease-out group-hover:scale-110"
               />
 

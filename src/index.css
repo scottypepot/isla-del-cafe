@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme {
+  /* Not currently used or loaded — add Fraunces back in index.html before using font-display. */
   --font-display: "Fraunces", serif;
   --font-sans: "Jost", sans-serif;
 
@@ -41,22 +42,6 @@ body {
 /* ---------------------------------- */
 /* Route-change loader (App.jsx)      */
 /* ---------------------------------- */
-
-@keyframes loader-logo-pulse {
-  0%,
-  100% {
-    transform: scale(0.92);
-    opacity: 0.85;
-  }
-  50% {
-    transform: scale(1.05);
-    opacity: 1;
-  }
-}
-
-.loader-logo {
-  animation: loader-logo-pulse 0.9s ease-in-out infinite;
-}
 
 @keyframes loader-glow-pulse {
   0%,
@@ -151,9 +136,14 @@ body {
   animation: modal-panel-pop 0.25s ease-out;
 }
 
-/* Themed scrollbar for the Menu filter popup */
+/* Themed scrollbar for the Menu filter popup — hidden until the user scrolls */
 .filter-popup-scroll {
   scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+  transition: scrollbar-color 0.3s ease;
+}
+
+.filter-popup-scroll.is-scrolling {
   scrollbar-color: var(--color-isla-gold) transparent;
 }
 
@@ -166,8 +156,13 @@ body {
 }
 
 .filter-popup-scroll::-webkit-scrollbar-thumb {
-  background-color: var(--color-isla-gold);
+  background-color: transparent;
   border-radius: 9999px;
+  transition: background-color 0.3s ease;
+}
+
+.filter-popup-scroll.is-scrolling::-webkit-scrollbar-thumb {
+  background-color: var(--color-isla-gold);
 }
 
 /* ---------------------------------- */
@@ -211,7 +206,6 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .page-transition,
-  .loader-logo,
   .loader-glow,
   .loader-palm,
   .loader-dot,

@@ -5,12 +5,13 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="relative flex min-h-screen items-center justify-center overflow-hidden bg-isla-black"
+      className="relative flex min-h-svh items-center justify-center overflow-hidden bg-isla-black"
     >
       {/* Background image */}
       <img
         src={backgroundImage}
-        alt="Isla Cafe"
+        alt=""
+        aria-hidden="true"
         className="absolute inset-0 h-full w-full object-cover"
       />
 

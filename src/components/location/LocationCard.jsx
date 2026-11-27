@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import useModalBehavior from "../../hooks/useModalBehavior.js";
+import { CloseIcon } from "../ui/icons.jsx";
 
 function LocationCard({ name, address, hours, social, mapQuery, image }) {
   const [isMapOpen, setIsMapOpen] = useState(false);
@@ -11,23 +13,7 @@ function LocationCard({ name, address, hours, social, mapQuery, image }) {
 
   const closeMap = () => setIsMapOpen(false);
 
-  // While the modal is open: lock background scroll, allow Escape to close
-  useEffect(() => {
-    if (!isMapOpen) return;
-
-    const handleKeyDown = (event) => {
-      if (event.key === "Escape") closeMap();
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-      document.body.style.overflow = previousOverflow;
-    };
-  }, [isMapOpen]);
+  const panelRef = useModalBehavior(isMapOpen, closeMap);
 
   const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(
     mapQuery,
@@ -100,7 +86,9 @@ function LocationCard({ name, address, hours, social, mapQuery, image }) {
             role="dialog"
             aria-modal="true"
             aria-label={`${name} location map`}
-            className="modal-panel-in relative w-full max-w-2xl overflow-hidden rounded-lg bg-isla-cream"
+            ref={panelRef}
+            tabIndex={-1}
+            className="modal-panel-in outline-none relative w-full max-w-2xl overflow-hidden rounded-lg bg-isla-cream"
             onClick={(event) => event.stopPropagation()}
           >
             <div className="flex items-center justify-between border-b border-isla-black/10 px-5 py-4 sm:px-6">
@@ -119,20 +107,7 @@ function LocationCard({ name, address, hours, social, mapQuery, image }) {
                 aria-label="Close map"
                 className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-isla-black/20 text-isla-black transition-colors duration-200 hover:bg-isla-black hover:text-white"
               >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M1 1L15 15M15 1L1 15"
-                    stroke="currentColor"
-                    strokeWidth="1.75"
-                    strokeLinecap="round"
-                  />
-                </svg>
+                <CloseIcon />
               </button>
             </div>
 
